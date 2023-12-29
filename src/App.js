@@ -25,6 +25,7 @@ class App extends React.Component {
 
     this.handleClear = this.handleClear.bind(this);
     this.handleNumber = this.handleNumber.bind(this);
+    this.handleResult = this.handleResult.bind(this);
     this.handleOperator = this.handleOperator.bind(this);
     this.handleCalculate = this.handleCalculate.bind(this);
   }
@@ -47,29 +48,52 @@ class App extends React.Component {
     switch (this.state.operation) {
       case operation.Number:
         this.setState({
+          display: "",
           input: [...this.state.input, totalVal]
-        });
+        }, this.handleResult);
         break;
       case operation.Operator:
         this.setState({
+          display: "",
           input: [...this.state.input, currVal, '0']
-        });
+        }, this.handleResult);
         break;
       default:
         console.error("Invalid operation");
         return;
     }
-
+  }
+  handleResult() {
     currVal = "";
-    totalVal = "";
     prevValue = "";
 
-    for (let i in this.state.input) {
-      // Look for multiplication and calculate
-      console.log(this.state.input.at(i));
-      // Look for division and calculate
-      // Add/Subtract from the left
+    const input = this.state.input;
+
+    // Look for multiplication and calculate
+    if (input.length >= 3) {
+      for (let i = 0; i < input.length; i++) {
+        let a = input[i - 1];
+        let x = input[i];
+        let b = input[i + 1];
+
+        if (x === 'x') {
+          // Calculate
+          totalVal = a * b;
+          // Change the next element into the result
+          input[i + 1] = totalVal.toString();
+          // Trim
+          input.splice(i - 1, i + 1);
+        }
+      }
     }
+    
+    // Look for division and calculate
+
+    // Add/Subtract from the left
+
+    this.setState({
+      result: totalVal
+    }, () => { totalVal.toString(); });
   }
   handleNumber() {
     // Clean up and change operation
