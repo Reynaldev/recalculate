@@ -39,13 +39,16 @@ button:hover {
 #display {
   color: rgb(200, 200, 200);
 
-  width: 100%;
+  width: 240px;
   height: 25px;
+
+  overflow: hidden;
+  overflow-anchor: auto;
 }
 
 #result {
   color: rgb(150, 150, 150);
   
-  width: 100%;
+  width: 240px;
   height: 25px;
 }
