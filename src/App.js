@@ -69,14 +69,27 @@ class App extends React.Component {
 
     const input = this.state.input;
 
-    // Look for multiplication and calculate
-    if (input.length >= 3) {
-      for (let i = 0; i < input.length; i++) {
+    do {
+      console.log(input);
+
+      for (let i = 1; i < input.length; i + 2) {
         let a = input[i - 1];
-        let x = input[i];
+        let o = input[i];
         let b = input[i + 1];
 
-        if (x === 'x') {
+        // If a and/or b is zero; skip the calculation.
+        if (a === '0' || b === '0') {
+          console.error("Error = Can't divide by zero");
+
+          this.setState({
+            display: "Can't divide by zero",
+            input: []
+          });
+
+          return;
+        }
+
+        if (o === 'x') {
           // Calculate
           totalVal = a * b;
           // Change the next element into the result
@@ -84,14 +97,24 @@ class App extends React.Component {
           // Trim
           input.splice(i - 1, i + 1);
         }
+
+        if (o === '/') {
+          // Calculate
+          totalVal = a / b;
+          // Change the next element into the result
+          input[i + 1] = totalVal.toString();
+          // Trim
+          input.splice(i - 1, i + 1);
+        }
       }
-    }
-    
-    // Look for division and calculate
+    } while (input.length >= 3);
+
+    console.log(input);
 
     // Add/Subtract from the left
 
     this.setState({
+      input: [],
       result: totalVal
     }, () => { totalVal.toString(); });
   }
