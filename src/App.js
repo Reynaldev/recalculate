@@ -96,14 +96,12 @@ class App extends React.Component {
         }
 
         if (o === '/') {
-          console.log(`DIV indexes = ${i - 1} | ${i} | ${i + 1}`);
-
           // Calculate
           totalVal = parseFloat(a) / parseFloat(b);
           // Change the previous element into the result
           input[i - 1] = totalVal.toString();
           // Trim
-          input.splice(i - 1, 2);
+          input.splice(i, 2);
 
           console.log(`DIV ${a} ${o} ${b} = ${totalVal}`);
         }
@@ -123,7 +121,7 @@ class App extends React.Component {
           // Change the previous element into the result
           input[i - 1] = totalVal.toString();
           // Trim
-          input.splice(i - 1, 2);
+          input.splice(i, 2);
 
           console.log(`MUL ${a} ${o} ${b} = ${totalVal}`);
         }
@@ -143,7 +141,7 @@ class App extends React.Component {
           // Change the previous element into the result
           input[i - 1] = totalVal.toString();
           // Trim
-          input.splice(i - 1, 2);
+          input.splice(i, 2);
 
           console.log(`ADD ${a} ${o} ${b} = ${totalVal}`);
         } else if (o === '-') {
@@ -152,7 +150,7 @@ class App extends React.Component {
           // Change the previous element into the result
           input[i - 1] = totalVal.toString();
           // Trim
-          input.splice(i - 1, 2);
+          input.splice(i, 2);
 
           console.log(`SUB ${a} ${o} ${b} = ${totalVal}`);
         } 
