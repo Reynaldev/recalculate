@@ -69,14 +69,20 @@ class App extends React.Component {
 
     const input = this.state.input;
 
-    do {
-      console.log(input);
+    console.log(input.length);
+    console.log(input);
 
-      for (let i = 1; i < input.length; i + 2) {
+    do {
+      // Do division
+      for (let i = 1; i < input.length; i += 2) {
+        console.log(`DIV: ${input}`);
+
         let a = input[i - 1];
         let o = input[i];
         let b = input[i + 1];
 
+        // console.log(`div index ${j}`);
+        
         // If a and/or b is zero; skip the calculation.
         if (a === '0' || b === '0') {
           console.error("Error = Can't divide by zero");
@@ -89,34 +95,76 @@ class App extends React.Component {
           return;
         }
 
-        if (o === 'x') {
-          // Calculate
-          totalVal = a * b;
-          // Change the next element into the result
-          input[i + 1] = totalVal.toString();
-          // Trim
-          input.splice(i - 1, i + 1);
-        }
-
         if (o === '/') {
+          console.log(`DIV indexes = ${i - 1} | ${i} | ${i + 1}`);
+
           // Calculate
-          totalVal = a / b;
-          // Change the next element into the result
-          input[i + 1] = totalVal.toString();
+          totalVal = parseFloat(a) / parseFloat(b);
+          // Change the previous element into the result
+          input[i - 1] = totalVal.toString();
           // Trim
-          input.splice(i - 1, i + 1);
+          input.splice(i - 1, 2);
+
+          console.log(`DIV ${a} ${o} ${b} = ${totalVal}`);
         }
+      }
+
+      // Do multiplication
+      for (let i = 1; i < input.length; i += 2) {
+        console.log(`MUL: ${input}`);
+
+        let a = input[i - 1];
+        let o = input[i];
+        let b = input[i + 1];
+
+        if (o === 'x') {
+          // Calculate`
+          totalVal = parseFloat(a) * parseFloat(b);
+          // Change the previous element into the result
+          input[i - 1] = totalVal.toString();
+          // Trim
+          input.splice(i - 1, 2);
+
+          console.log(`MUL ${a} ${o} ${b} = ${totalVal}`);
+        }
+      }
+
+      // Do addition/subtraction
+      for (let i = 1; i < input.length; i += 2) {
+        console.log(`ADD/SUB: ${input}`);
+
+        let a = input[i - 1];
+        let o = input[i];
+        let b = input[i + 1];
+
+        if (o === '+') {
+          // Calculate
+          totalVal = parseFloat(a) + parseFloat(b);
+          // Change the previous element into the result
+          input[i - 1] = totalVal.toString();
+          // Trim
+          input.splice(i - 1, 2);
+
+          console.log(`ADD ${a} ${o} ${b} = ${totalVal}`);
+        } else if (o === '-') {
+          // Calculate
+          totalVal = parseFloat(a) - parseFloat(b);
+          // Change the previous element into the result
+          input[i - 1] = totalVal.toString();
+          // Trim
+          input.splice(i - 1, 2);
+
+          console.log(`SUB ${a} ${o} ${b} = ${totalVal}`);
+        } 
       }
     } while (input.length >= 3);
 
     console.log(input);
 
-    // Add/Subtract from the left
-
     this.setState({
       input: [],
       result: totalVal
-    }, () => { totalVal.toString(); });
+    }, () => { totalVal = totalVal.toString(); });
   }
   handleNumber() {
     // Clean up and change operation
