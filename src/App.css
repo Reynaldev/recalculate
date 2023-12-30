@@ -20,6 +20,7 @@ button:hover {
   
   width: fit-content;
   padding: 10px;
+  margin-top: 10em;
 
   border-radius: 10px;
 }
@@ -37,18 +38,29 @@ button:hover {
 }
 
 #display {
-  color: rgb(200, 200, 200);
+  color: rgb(150, 150, 150);
 
   width: 240px;
   height: 25px;
 
   overflow: hidden;
   overflow-anchor: auto;
+
+  font-size: 18px;
+  font-family: "alarm-clock";
 }
 
 #result {
-  color: rgb(150, 150, 150);
+  color: rgb(200, 200, 200);
   
   width: 240px;
   height: 25px;
+
+  font-size: 24px;
+  font-family: "alarm-clock";
+}
+
+@font-face {
+  font-family: "alarm-clock";
+  src: url(./assets/font/alarm-clock.ttf);
 }

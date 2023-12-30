@@ -1,11 +1,25 @@
 import React from 'react';
 import './App.css';
 
-// Enumerator
+// Input operation 
 const operation = {
   Number: "NUMBER",
   Operator: "OPERATOR"
 };
+
+// Operators
+const operators = {
+  DIV: 1,             // Division
+  MUL: 2,             // Multiplication
+  ADS: 4,             // Addition or subtraction
+};
+
+/* Does current calculation contain specific operator defined above?
+ * Always set to null after calculation is finished.
+ * example:
+ *    containOperators |= operators.DIV; 
+ */
+let containOperators = null;
 
 // Used to compare current number/operator with previous number/operator
 let prevValue = "", currVal = "";
@@ -31,6 +45,7 @@ class App extends React.Component {
   }
   handleClear() {
     this.setState({
+      operation: operation.Number,
       input: [],
       display: "",
       result: 0
@@ -68,105 +83,135 @@ class App extends React.Component {
     prevValue = "";
 
     const input = this.state.input;
+    // For benchmarking only
+    // const timeStart = (new Date()).getTime();
 
-    console.log(input.length);
-    console.log(input);
+    // console.log(input.length);
+    // console.log(input);
 
     do {
       // Do division
-      for (let i = 1; i < input.length; i += 2) {
-        console.log(`DIV: ${input}`);
-
-        let a = input[i - 1];
-        let o = input[i];
-        let b = input[i + 1];
-
-        // console.log(`div index ${j}`);
-        
-        // If a and/or b is zero; skip the calculation.
-        if (a === '0' || b === '0') {
-          console.error("Error = Can't divide by zero");
-
-          this.setState({
-            display: "Can't divide by zero",
-            input: []
-          });
-
-          return;
-        }
-
-        if (o === '/') {
-          // Calculate
-          totalVal = parseFloat(a) / parseFloat(b);
-          // Change the previous element into the result
-          input[i - 1] = totalVal.toString();
-          // Trim
-          input.splice(i, 2);
-
-          console.log(`DIV ${a} ${o} ${b} = ${totalVal}`);
+      if (containOperators & operators.DIV) {
+        for (let i = 1; i < input.length; i += 2) {
+          // console.log(`DIV: ${input}`);
+  
+          let a = input[i - 1];
+          let o = input[i];
+          let b = input[i + 1];
+  
+          // console.log(`div index ${j}`);
+          
+          // If a and/or b is zero; skip the calculation.
+          if (a === '0' || b === '0') {
+            console.error("Error = Can't divide by zero");
+  
+            this.setState({
+              display: "Can't divide by zero",
+              input: []
+            });
+  
+            return;
+          }
+  
+          if (o === '/') {
+            // Calculate
+            totalVal = parseFloat(a) / parseFloat(b);
+            // Change the previous element into the result
+            input[i - 1] = totalVal.toString();
+            // Trim
+            input.splice(i, 2);
+  
+            // console.log(`DIV ${a} ${o} ${b} = ${totalVal}`);
+          }
         }
       }
 
       // Do multiplication
-      for (let i = 1; i < input.length; i += 2) {
-        console.log(`MUL: ${input}`);
-
-        let a = input[i - 1];
-        let o = input[i];
-        let b = input[i + 1];
-
-        if (o === 'x') {
-          // Calculate`
-          totalVal = parseFloat(a) * parseFloat(b);
-          // Change the previous element into the result
-          input[i - 1] = totalVal.toString();
-          // Trim
-          input.splice(i, 2);
-
-          console.log(`MUL ${a} ${o} ${b} = ${totalVal}`);
+      if (containOperators & operators.MUL) {
+        for (let i = 1; i < input.length; i += 2) {
+          // console.log(`MUL: ${input}`);
+  
+          let a = input[i - 1];
+          let o = input[i];
+          let b = input[i + 1];
+  
+          if (o === 'x') {
+            // Calculate`
+            totalVal = parseFloat(a) * parseFloat(b);
+            // Change the previous element into the result
+            input[i - 1] = totalVal.toString();
+            // Trim
+            input.splice(i, 2);
+  
+            // console.log(`MUL ${a} ${o} ${b} = ${totalVal}`);
+          }
         }
       }
 
       // Do addition/subtraction
-      for (let i = 1; i < input.length; i += 2) {
-        console.log(`ADD/SUB: ${input}`);
-
-        let a = input[i - 1];
-        let o = input[i];
-        let b = input[i + 1];
-
-        if (o === '+') {
-          // Calculate
-          totalVal = parseFloat(a) + parseFloat(b);
-          // Change the previous element into the result
-          input[i - 1] = totalVal.toString();
-          // Trim
-          input.splice(i, 2);
-
-          console.log(`ADD ${a} ${o} ${b} = ${totalVal}`);
-        } else if (o === '-') {
-          // Calculate
-          totalVal = parseFloat(a) - parseFloat(b);
-          // Change the previous element into the result
-          input[i - 1] = totalVal.toString();
-          // Trim
-          input.splice(i, 2);
-
-          console.log(`SUB ${a} ${o} ${b} = ${totalVal}`);
-        } 
+      if (containOperators & operators.ADS) {
+        for (let i = 1; i < input.length; i += 2) {
+          // console.log(`ADD/SUB: ${input}`);
+  
+          let a = input[i - 1];
+          let o = input[i];
+          let b = input[i + 1];
+  
+          if (o === '+') {
+            // Calculate
+            totalVal = parseFloat(a) + parseFloat(b);
+            // Change the previous element into the result
+            input[i - 1] = totalVal.toString();
+            // Trim
+            input.splice(i, 2);
+  
+            // console.log(`ADD ${a} ${o} ${b} = ${totalVal}`);
+          } else if (o === '-') {
+            // Calculate
+            totalVal = parseFloat(a) - parseFloat(b);
+            // Change the previous element into the result
+            input[i - 1] = totalVal.toString();
+            // Trim
+            input.splice(i, 2);
+  
+            // console.log(`SUB ${a} ${o} ${b} = ${totalVal}`);
+          } 
+        }
       }
     } while (input.length >= 3);
 
-    console.log(input);
+    // console.log(input);
+    // const timeEnd = (new Date()).getTime() - timeStart;
+    // console.log(`Finished time: ${timeEnd}ms`);
 
     this.setState({
+      operation: operation.Number,
       input: [],
       result: totalVal
-    }, () => { totalVal = totalVal.toString(); });
+    }, () => { 
+      totalVal = totalVal.toString(); 
+      containOperators = null;
+    });
   }
   handleNumber() {
     // Clean up and change operation
     if (this.state.operation !== operation.Number) {
+      // Add the operator into registry
+      switch (currVal) {
+        case '/':
+          containOperators |= operators.DIV;
+          break;
+        case 'x':
+          containOperators |= operators.MUL;
+          break;
+        case '+':
+        case '-':
+          containOperators |= operators.ADS
+          break;
+        default:
+          break;
+      }
+
       this.setState({
         operation: operation.Number,
         input: [...this.state.input, currVal]
@@ -178,17 +223,12 @@ class App extends React.Component {
     const el = document.activeElement;
     currVal = el.innerHTML;
 
+    prevValue = currVal;
     /**
      * If previous value store a 0 or null, replace it and store a new number.
      * Otherwise, add the number into totalVal.
      */
-    if (prevValue === null || totalVal === '0') {
-      prevValue = currVal
-      totalVal = currVal;
-    } else {
-      prevValue = currVal;
-      totalVal = totalVal.concat(prevValue);
-    }
+    totalVal = (prevValue === null || totalVal === '0') ? currVal : totalVal.concat(prevValue);
 
     // Set display to print the number
     this.setState({
@@ -287,7 +327,6 @@ class App extends React.Component {
             </td>
           </tr>
         </table>
-        {this.state.input}
       </div>
     );
   }
