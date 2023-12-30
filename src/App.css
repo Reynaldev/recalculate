@@ -60,6 +60,23 @@ button:hover {
   font-family: "alarm-clock";
 }
 
+#equals {
+  background-color: rgb(200, 200, 200);
+  color: rgb(25, 25, 25);
+
+  border: none;
+  
+  transition: 0.3s;
+}
+
+#equals:hover {
+  background-color: rgb(150, 150, 150);
+  
+  border: none;
+  
+  transition: 0.3s;
+}
+
 @font-face {
   font-family: "alarm-clock";
   src: url(./assets/font/alarm-clock.ttf);
