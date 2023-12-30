@@ -40,8 +40,18 @@ class App extends React.Component {
     this.handleClear = this.handleClear.bind(this);
     this.handleNumber = this.handleNumber.bind(this);
     this.handleResult = this.handleResult.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleOperator = this.handleOperator.bind(this);
     this.handleCalculate = this.handleCalculate.bind(this);
+  }
+  handleDelete() {
+    if (totalVal.length > 0) {
+      totalVal = totalVal.substring(0, totalVal.length - 1);
+
+      this.setState({
+        display: totalVal
+      });
+    }
   }
   handleClear() {
     this.setState({
@@ -55,7 +65,7 @@ class App extends React.Component {
     totalVal = "";
     prevValue = "";
   }
-  handleCalculate() {
+  handleResult() {
     // Skip if input is empty
     if (this.state.input.length < 1) return;
 
@@ -65,20 +75,20 @@ class App extends React.Component {
         this.setState({
           display: "",
           input: [...this.state.input, totalVal]
-        }, this.handleResult);
+        }, this.handleCalculate);
         break;
       case operation.Operator:
         this.setState({
           display: "",
           input: [...this.state.input, currVal, '0']
-        }, this.handleResult);
+        }, this.handleCalculate);
         break;
       default:
         console.error("Invalid operation");
         return;
     }
   }
-  handleResult() {
+  handleCalculate() {
     currVal = "";
     prevValue = "";
 
@@ -270,10 +280,12 @@ class App extends React.Component {
               <button id="clear" style={{backgroundColor: "rgb(150, 10, 10)"}} onClick={this.handleClear}>AC</button>
             </td>
             <td>
-              <button id="divide" onClick={this.handleOperator}>/</button>
+              <button id="divide" onClick={this.handleDelete}>
+                <i class="fa-solid fa-delete-left"></i>
+              </button>
             </td>
             <td>
-              <button id="multiply" onClick={this.handleOperator}>x</button>
+              <button id="divide" onClick={this.handleOperator}>/</button>
             </td>
           </tr>
           <tr>
@@ -287,7 +299,7 @@ class App extends React.Component {
               <button id="nine" onClick={this.handleNumber}>9</button>
             </td>
             <td>
-              <button id="subtract" onClick={this.handleOperator}>-</button>
+              <button id="multiply" onClick={this.handleOperator}>x</button>
             </td>
           </tr>
           <tr>
@@ -301,7 +313,7 @@ class App extends React.Component {
               <button id="six" onClick={this.handleNumber}>6</button>
             </td>
             <td>
-              <button id="add" onClick={this.handleOperator}>+</button>
+              <button id="subtract" onClick={this.handleOperator}>-</button>
             </td>
           </tr>
           <tr>
@@ -314,8 +326,8 @@ class App extends React.Component {
             <td>
               <button id="three" onClick={this.handleNumber}>3</button>
             </td>
-            <td rowSpan="2">
-              <button id="equals" style={{height: 135 + 'px'}} onClick={this.handleCalculate}>=</button>
+            <td>
+              <button id="add" onClick={this.handleOperator}>+</button>
             </td>
           </tr>
           <tr>
@@ -324,6 +336,9 @@ class App extends React.Component {
             </td>
             <td>
               <button id="decimal" onClick={this.handleNumber}>.</button>
+            </td>
+            <td>
+              <button id="equals" onClick={this.handleResult}>=</button>
             </td>
           </tr>
         </table>
